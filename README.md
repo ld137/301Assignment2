@@ -1,6 +1,9 @@
 # COMPX301-23A — Assignment Two
+
 ##LZ78 Compression
+
 ##Due: Saturday, April 29th, 2023 — 11:00pm
+
 ###Description: Implement LZ78 compression and decompression. This assignment is to be done in pairs (i.e. with a partner), and implemented in Java such that your code compiles and runs on the Linux machines in the R Block labs.
 
 ##Specification: Implement the LZ78 compression and decompression routines according to the following specifications:
