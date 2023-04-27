@@ -9,21 +9,23 @@ public class LZencode {
         long startTime = System.currentTimeMillis();
         try {
             String encoded = encodeFromSTD();
-            byte[] bytes = new byte[encoded.length() / 2];
-            for (int i = 0; i < encoded.length(); i += 2) {
-                String hex = encoded.substring(i, i + 2);
-                bytes[i / 2] = (byte) Integer.parseInt(hex, 16);
-            }
-            for (byte b : bytes) {
-                System.out.print(Integer.toBinaryString(b & 0xFF) + " ");
-            }
+            System.err.println("");
+            // byte[] bytes = new byte[encoded.length() / 2];
+            // for (int i = 0; i < encoded.length(); i += 2) {
+            //     String hex = encoded.substring(i, i + 2);
+            //     bytes[i / 2] = (byte) Integer.parseInt(hex, 16);
+            // }
+            // for (byte b : bytes) {
+            //     System.out.print(Integer.toBinaryString(b & 0xFF) + " ");
+            // }
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.err.println("Exception Occured");
+            System.err.println(ex);
         }
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-        System.out.println("Execution time: " + duration + " milliseconds");
-        System.out.println("Execution time: " + duration/1000 + " seconds");
+        System.err.println("Execution time: " + duration + " milliseconds");
+        System.err.println("Execution time: " + duration/1000 + " seconds");
     }
 
     public static String encodeFromSTD() throws IOException {
@@ -41,7 +43,8 @@ public class LZencode {
             String hexDigit = Integer.toHexString(highBits) + Integer.toHexString(lowBits);
             hexStream += hexDigit;
             // printing to see our results
-            System.err.printf("%x %x ", highBits, lowBits);
+            //System.err.printf("%x %x ", highBits, lowBits);
+            //System.err.println("");
         }
         //
         // System.out.println("");
@@ -56,28 +59,36 @@ public class LZencode {
         String output = "";
 
         while (currentChar <= encodeMe.length() - 1) {
-            System.err.println(currentEncode);
             currentEncode = currentEncode + encodeMe.charAt(currentChar);
             // System.out.println(currentEncode);
             int exists = trie.find(currentEncode);
-            if (exists > -1) {
+            if (exists == -1) {
+                int phaseInseted = trie.insert(currentEncode);
+                System.err.println(phaseInseted + " " + encodeMe.charAt(currentChar));
+                System.out.println(phaseInseted + " " + encodeMe.charAt(currentChar));
+                output = output + "(" + (phaseInseted) + "," + encodeMe.charAt(currentChar) + ") ";
+                currentEncode = "";
                 currentChar++;
                 continue;
-            }
-            ;
-            int phaseInseted = trie.insert(currentEncode);
-            output = output + "" + (phaseInseted) + "" + encodeMe.charAt(currentChar) + "";
-            currentEncode = "";
-            currentChar++;
-        }
+            };
 
+                currentChar++;
+        }
         if (currentEncode.length() != 0) {
             int phaseInseted = trie.find(currentEncode);
-            output = output + "0" + (phaseInseted) + "";
+            output = output + (phaseInseted) + "$";
+            System.err.println(phaseInseted + " $");
+            System.out.println(phaseInseted + " $");
             currentEncode = "";
+        }    
+        if (!(output.charAt(output.length() - 1) == '$')){
+            System.out.println("$");
+            System.err.println("$");
         }
-        //System.out.println(output);
+        System.err.println("");
         //System.err.println(output);
+        System.err.println("");
+        System.err.println("Max Phase: " + trie.getMaxPhase());
         return output;
     }
 }

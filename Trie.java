@@ -23,6 +23,10 @@ public class Trie {
         return -1;
     }
 
+    public int getMaxPhase(){
+        return this.currentPhase;
+    }
+
     public int insert(String value) {
         char checkVal = value.charAt(0);
         for (TrieNode child : children) {
