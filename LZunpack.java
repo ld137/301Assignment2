@@ -31,6 +31,7 @@ public class LZunpack {
 
         // Read input to end
         while ((b = in.read()) != -1) {
+            hexStream = "";
             for(int i = 0; i < maxLen / 8; i++){
                 // get high bits
             int highBits = (b >> 4) & 0xf;
@@ -40,7 +41,8 @@ public class LZunpack {
             String hexDigit = Integer.toHexString(highBits) + Integer.toHexString(lowBits);
             hexStream += hexDigit;
             }
-
+            System.err.println(hexStream);
+        }
         }
     }
 }
