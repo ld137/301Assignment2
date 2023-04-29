@@ -40,18 +40,18 @@ public class LZpack {
             int hexResult = (hexCode == -1 ? 0 : hexCode) & hexMask;
 
 
-            //System.err.println("phrase:" + phrase);
-            //System.err.println("hexCode:" + hexCode);
-            //System.err.println("log2x:" + log2x);
+            System.err.println("phrase:" + phrase);
+            System.err.println("hexCode:" + hexCode);
+            System.err.println("log2x:" + log2x);
             String paddedHex = String.format("%1$" + 4 + "s", Integer.toBinaryString(hexResult)).replace(' ', '0');
-            //System.err.println("hexResult:" + paddedHex);
+            System.err.println("hexResult:" + paddedHex);
             String paddedPhrase = String
                     .format("%1$" + (log2x == 0 ? 1 : log2x) + "s", Integer.toBinaryString(phraseResult))
                     .replace(' ', '0');
-            //System.err.println("phraseResult:" + paddedPhrase);
-            //System.err.println("");
+            System.err.println("phraseResult:" + paddedPhrase);
+            System.err.println(paddedPhrase + paddedHex);
             outputBinaryString += paddedPhrase + paddedHex;
-            //System.err.println("");
+            System.err.println("");
             currentMaxDict++;
 
         }

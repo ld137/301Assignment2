@@ -15,10 +15,13 @@ public class LZunpack {
         //rinse and repeat until end of stream, when you get to the end of stream, there might be leftover space, 
         //so when reading in the 'final' phrase, if you get past the current log p value disregard progress and consider the read complete
 
+        int currentMaxDict = 0;
 
         while (loop) {
+            
+            int log2x = (int) Math.ceil(Math.log(currentMaxDict == 0 ? 1 : currentMaxDict) / Math.log(2));
+            
             b = in.read();
-
             // get high bits
             int highBits = (b >> 4) & 0xf;
             // get low bits
