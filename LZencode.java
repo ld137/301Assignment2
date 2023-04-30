@@ -69,7 +69,7 @@ public class LZencode {
             if (exists == -1) {
                 int phaseInseted = trie.insert(currentEncode);
                 System.err.println(phaseInseted + " " + encodeMe.charAt(currentChar));
-                output.add((phaseInseted) + " " + encodeMe.charAt(currentChar));
+                output.add((phaseInseted) + " " + Character.digit(encodeMe.charAt(currentChar), 16));
                 currentEncode = "";
                 currentChar++;
                 continue;

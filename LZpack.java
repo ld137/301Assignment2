@@ -31,7 +31,7 @@ public class LZpack {
         for (String line : lines) {
             String[] parts = line.split(" ");
             int phrase = Integer.parseInt(parts[0]);
-            int hexCode = Character.digit(parts[1].charAt(0), 16);
+            int hexCode = parts[1].compareTo("$") == 0 ? 0 : Integer.parseInt(parts[1]);
             int log2x = (int) Math.ceil(Math.log(currentMaxDict == 0 ? 1 : currentMaxDict) / Math.log(2));
             // int phraseMask = (1 << log2x) - 1;
             int phraseMask = (1 << log2x) - (phrase == 0 ? 0 : 1);
