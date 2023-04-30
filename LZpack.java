@@ -1,12 +1,13 @@
 //Impliment
 
 //Impliment
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Scanner;
 
 public class LZpack {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         ArrayList<byte[]> outputBytes = new ArrayList<byte[]>();
         ArrayList<String> lines = new ArrayList<>();
@@ -39,7 +40,6 @@ public class LZpack {
             int hexMask = 0b1111;
             int hexResult = (hexCode == -1 ? 0 : hexCode) & hexMask;
 
-
             System.err.println("phrase:" + phrase);
             System.err.println("hexCode:" + hexCode);
             System.err.println("log2x:" + log2x);
@@ -64,9 +64,18 @@ public class LZpack {
                 bitSet.set(i);
             }
         }
+        int numBytes = (int) Math.ceil((bitSet.length()+7) / 8.0);
+        byte[] byteArray = new byte[numBytes];
+        for (int i = 0; i < bitSet.length(); i++) {
+            if (bitSet.get(i)) {
+                int byteIndex = i / 8;
+                int bitIndex = i % 8;
+                byteArray[byteIndex] |= (1 << (7 - bitIndex));
+            }
+        }
 
-        byte[] byteArray = bitSet.toByteArray();
-        System.out.print(byteArray);
+        System.out.write(byteArray);
+        System.out.flush();
 
     }
 }
