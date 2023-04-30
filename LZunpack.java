@@ -25,36 +25,31 @@ public class LZunpack {
         ArrayList<String> output = new ArrayList<>();
         int log2x = (int) Math.ceil(Math.log(currentMaxDict == 0 ? 1 : currentMaxDict) / Math.log(2));
         while ((b = in.read()) != -1) {
-            printPaddedBinary(b, 8, "Read In");
+            remainder = remainder + 8;
+            // System.err.println("Remainder: " + remainder + " Log2x: " + log2x);
+            // Get the current minimum size the phrase can be in bits
             log2x = (int) Math.ceil(Math.log(currentMaxDict == 0 ? 1 : currentMaxDict) / Math.log(2));
+            // if the phrase is 0 set it to 1;
             log2x = (log2x == 0 ? 1 : log2x);
-            System.err.println("log2x: " + log2x);
-            int shiftMe = b<<((3*8)-remainder);
-            System.err.println("Remainder: " + remainder);
+
+            int shiftMe = b << ((32) - remainder);
             fullInput = fullInput | shiftMe;
-            remainder = (8+remainder) - log2x - 4;
-            if (log2x >= (currentBytes*8)) {
-                currentBytes++;
-                continue;
-            };
-            currentBytes = 1;
-            // Shift the fullInput up by (3x8) - Bit remainder
-            //fullInput = fullInput << ((3*8)-remainder);
-            printPaddedBinary(fullInput, 32, "Fullinput");
+
+            if (remainder < (log2x+4)) continue;
+
             int phrase = getXMSBits(log2x, fullInput);
             fullInput = fullInput << log2x;
             int hex = getXMSBits(4, fullInput);
             output.add(phrase + " " + hex);
             fullInput = fullInput << 4;
-            printPaddedBinary(phrase, log2x, "Phrase");
-            printPaddedBinary(hex, 4, "Hex");
-            printPaddedBinary(fullInput, 32, "Fullinput");
-            System.err.println("-");
+
+            //Modify the bit remainder so that we dont overwrite our other bits
+            remainder = remainder - log2x - 4;
             currentMaxDict++;
 
         }
-        //System.err.println(fullInput);
-        if (fullInput != 0){
+        // System.err.println(fullInput);
+        if (fullInput != 0) {
             int phrase = getXMSBits(log2x, fullInput);
             output.add(phrase + " " + "$");
         }
@@ -63,8 +58,15 @@ public class LZunpack {
         for (String item : output) {
             sb.append(item).append("\n");
         }
+        int lineCounter = 0;
+        StringBuilder debugString = new StringBuilder();
+        for (String item : output) {
+            debugString.append("[" + lineCounter + "]" + item).append("\n");
+            lineCounter++;
+        }
 
         String newLineSeparatedString = sb.toString();
+        // System.err.println(debugString.toString());
         System.out.println(newLineSeparatedString);
     }
 
@@ -74,8 +76,8 @@ public class LZunpack {
     }
 
     public static int getXMSBits(int numBits, int num) {
-        int shiftedNum = num >> (Integer.SIZE - numBits);
+        int shiftedNum = num >> (32 - numBits);
         int maskedNum = shiftedNum & ((1 << numBits) - 1);
-        return maskedNum;
+        return (int) maskedNum;
     }
 }

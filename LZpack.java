@@ -15,7 +15,7 @@ public class LZpack {
         // Read input until the stop character is encountered
         while (scanner.hasNext()) {
             String line = scanner.nextLine();
-            System.err.println(line);
+            //System.err.println(line);
             if (line.indexOf(stopChar) != -1) {
                 // Stop character found, append input up to stop character and stop
                 lines.add(line.substring(0, line.indexOf(stopChar)) + stopChar);
@@ -30,6 +30,7 @@ public class LZpack {
         int currentMaxDict = 0;
         for (String line : lines) {
             String[] parts = line.split(" ");
+            if (parts[0].compareTo("$") == 0) break;
             int phrase = Integer.parseInt(parts[0]);
             int hexCode = parts[1].compareTo("$") == 0 ? 0 : Integer.parseInt(parts[1]);
             int log2x = (int) Math.ceil(Math.log(currentMaxDict == 0 ? 1 : currentMaxDict) / Math.log(2));
@@ -40,22 +41,22 @@ public class LZpack {
             int hexMask = 0b1111;
             int hexResult = (hexCode == -1 ? 0 : hexCode) & hexMask;
 
-            System.err.println("phrase:" + phrase);
-            System.err.println("hexCode:" + hexCode);
-            System.err.println("log2x:" + log2x);
+            ////System.err.println("phrase:" + phrase);
+            //System.err.println("hexCode:" + hexCode);
+            //System.err.println("log2x:" + log2x);
             String paddedHex = String.format("%1$" + 4 + "s", Integer.toBinaryString(hexResult)).replace(' ', '0');
-            System.err.println("hexResult:" + paddedHex);
+            //System.err.println("hexResult:" + paddedHex);
             String paddedPhrase = String
                     .format("%1$" + (log2x == 0 ? 1 : log2x) + "s", Integer.toBinaryString(phraseResult))
                     .replace(' ', '0');
-            System.err.println("phraseResult:" + paddedPhrase);
-            System.err.println(paddedPhrase + paddedHex);
+            //System.err.println("phraseResult:" + paddedPhrase);
+            //System.err.println(paddedPhrase + paddedHex);
             outputBinaryString += paddedPhrase + paddedHex;
-            System.err.println("");
+            //System.err.println("");
             currentMaxDict++;
 
         }
-        System.err.println(outputBinaryString);
+        //System.err.println(outputBinaryString);
 
         BitSet bitSet = new BitSet(outputBinaryString.length());
 

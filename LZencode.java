@@ -61,14 +61,14 @@ public class LZencode {
         int currentChar = 0;
         String currentEncode = "";
         ArrayList<String> output = new ArrayList<String>();
-
         while (currentChar <= encodeMe.length() - 1) {
+            //System.err.print(" " + currentChar);
             currentEncode = currentEncode + encodeMe.charAt(currentChar);
             // System.out.println(currentEncode);
             int exists = trie.find(currentEncode);
             if (exists == -1) {
                 int phaseInseted = trie.insert(currentEncode);
-                System.err.println(phaseInseted + " " + encodeMe.charAt(currentChar));
+                //System.err.println(phaseInseted + " " + encodeMe.charAt(currentChar));
                 output.add((phaseInseted) + " " + Character.digit(encodeMe.charAt(currentChar), 16));
                 currentEncode = "";
                 currentChar++;
@@ -80,12 +80,12 @@ public class LZencode {
         if (currentEncode.length() != 0) {
             int phaseInseted = trie.find(currentEncode);
             output.add((phaseInseted) + " $");
-            System.err.println(phaseInseted + " $");
+            //System.err.println(phaseInseted + " $");
             currentEncode = "";
         }
         String lastItem = output.get(output.size() - 1);
         if (!(lastItem.charAt(lastItem.length() - 1) == '$')) {
-            System.err.println("$");
+            //System.err.println("$");
             output.add("$");
         }
         System.err.println("Max Phase: " + trie.getMaxPhase());

@@ -31,7 +31,7 @@ public class LZdecode {
         for (String line : lines) {
             if (line.compareTo("") == 0) continue;
             if (line.compareTo("\n") == 0) continue;
-            System.err.println("Decoding: " + line);
+            //System.err.println("Decoding: " + line);
             String[] parts = line.split(" ");
             if (parts[0].compareTo("$") == 0) break;
             int phase = Integer.parseInt(parts[0]);
@@ -43,21 +43,21 @@ public class LZdecode {
             } else {
                 if (character.compareTo("$") == 0){
                     decodedString = dictionary.get(phase);
-                    System.err.println("Decoded: " + decodedString + " From phase:" + phase);
+                    //System.err.println("Decoded: " + decodedString + " From phase:" + phase);
                     output.append(decodedString);
                     break;
                 }else {
                     decodedString = dictionary.get(phase) + character;
                 }
             }
-            System.err.println("Decoded: " + decodedString + " From phase:" + phase);
+            //System.err.println("Decoded: " + decodedString + " From phase:" + phase);
 
             output.append(decodedString);
             dictionary.put(nextIndex, decodedString);
             nextIndex++;
-            System.err.println("Dict size: " + dictionary.size() + " Current index: " + nextIndex);
+            //System.err.println("Dict size: " + dictionary.size() + " Current index: " + nextIndex);
         }
-        //System.err.println(output);
+        ////System.err.println(output);
         byte[] byteArray = new byte[output.length() / 2];
         for (int i = 0; i < byteArray.length; i++) {
             int index = i * 2;
